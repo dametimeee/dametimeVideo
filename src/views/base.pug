@@ -12,10 +12,11 @@ html(lang="ko")
                         a(href="/") Home
                     if loggedIn
                         li 
-                            a(href="/users/logout") Logout
+                            a(href="/users/edit") Edit Profile
                         li
                             a(href="/my-profile") #{loggedInUser.name}의 Profile
-                            
+                        li 
+                            a(href="/users/logout") Logout
                     else
                         li 
                             a(href="/join") Join
@@ -28,4 +29,4 @@ html(lang="ko")
                         
         main
             block content
-    include partials/footer.pug 
+    include partials/footer.pug  

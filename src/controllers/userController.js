@@ -1,4 +1,4 @@
-import User from "../models/User";
+import { githubUser, kakaoUser } from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -41,7 +41,8 @@ export const getLogin = (req, res) =>
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Login";
-  const user = await User.findOne({ username });
+  const user = await (githubUser.findOne({ username }) ||
+    kakaoUser.findOne({ username }));
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -100,6 +101,7 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
+    console.log(userData);
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
         headers: {
@@ -113,16 +115,16 @@ export const finishGithubLogin = async (req, res) => {
     if (!emailObj) {
       return res.redirect("/login");
     }
-    let user = await User.findOne({ email: emailObj.email });
+    let user = await githubUser.findOne({ email: emailObj.email });
     if (!user) {
-      user = await User.create({
+      user = await githubUser.create({
         avatarUrl: userData.avatarUrl,
-        name: userData.name,
+        name: userData.login,
         username: userData.login,
         email: emailObj.email,
         password: "",
-        socialOnly: true,
         location: userData.location,
+        socialOnly: true,
       });
     }
     req.session.loggedIn = true;
@@ -185,14 +187,15 @@ export const finishKakaoLogin = async (req, res) => {
       return res.redirect("/login");
     } **/
 
-    let user = await User.findOne({ email: userData.kakao_account.email });
+    let user = await kakaoUser.findOne({ email: userData.kakao_account.email });
     if (!user) {
-      user = await User.create({
+      user = await kakaoUser.create({
         avatarUrl: userData.kakao_account.profile.profile_image_url,
         name: userData.kakao_account.profile.nickname,
         username: userData.kakao_account.profile.nickname,
         email: userData.kakao_account.email,
         password: "",
+        location: "",
         socialOnly: true,
       });
     }
@@ -204,9 +207,28 @@ export const finishKakaoLogin = async (req, res) => {
   }
 };
 
-export const edit = (req, res) => res.send("Edit");
 export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
+};
+
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+
+export const postEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, email, username, location },
+  } = req;
+  await User.findByIdAndUpdate(id, {
+    name,
+    email,
+    username,
+    location,
+  });
+  return res.render("edit-profile");
 };
 export const see = (req, res) => res.send("see");
