@@ -1,4 +1,4 @@
-import { githubUser, kakaoUser } from "../models/User";
+import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
 
@@ -21,17 +21,20 @@ export const postJoin = async (req, res) => {
   }
   try {
     await User.create({
+      avatarUrl: "",
       name,
       username,
       email,
       password,
+      socialOnly: false,
       location,
     });
     return res.redirect("/login");
   } catch (error) {
+    console.log(error);
     return res.status(400).render("join", {
-      pageTitle,
-      errorMessage: "error._message",
+      pageTitle: "Upload Video",
+      errorMessage: error._message,
     });
   }
 };
@@ -41,8 +44,7 @@ export const getLogin = (req, res) =>
 export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const pageTitle = "Login";
-  const user = await (githubUser.findOne({ username }) ||
-    kakaoUser.findOne({ username }));
+  const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
     return res.status(400).render("login", {
       pageTitle,
@@ -53,14 +55,15 @@ export const postLogin = async (req, res) => {
   if (!ok) {
     return res.status(400).render("login", {
       pageTitle,
-      errorMessage: "Wrong password.",
+      errorMessage: "Wrong password",
     });
   }
   req.session.loggedIn = true;
   req.session.user = user;
-
-  res.redirect("/");
+  return res.redirect("/");
 };
+
+//Github Login
 
 export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
@@ -69,21 +72,22 @@ export const startGithubLogin = (req, res) => {
     allow_signup: false,
     scope: "read:user user:email",
   };
+
   const params = new URLSearchParams(config).toString();
   const finalUrl = `${baseUrl}?${params}`;
   return res.redirect(finalUrl);
 };
 
 export const finishGithubLogin = async (req, res) => {
-  const baseurl = "https://github.com/login/oauth/access_token";
+  const baseUrl = "https://github.com/login/oauth/access_token";
   const config = {
     client_id: process.env.GH_CLIENT,
     client_secret: process.env.GH_SECRET,
     code: req.query.code,
   };
   const params = new URLSearchParams(config).toString();
-  const finalUrl = `${baseurl}?${params}`;
-  const tokenRequset = await (
+  const finalUrl = `${baseUrl}?${params}`;
+  const tokenRequest = await (
     await fetch(finalUrl, {
       method: "POST",
       headers: {
@@ -91,8 +95,9 @@ export const finishGithubLogin = async (req, res) => {
       },
     })
   ).json();
-  if ("access_token" in tokenRequset) {
-    const { access_token } = tokenRequset; //const access_token = tokenRequest.accesstoken
+
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
     const apiUrl = "https://api.github.com";
     const userData = await (
       await fetch(`${apiUrl}/user`, {
@@ -101,7 +106,7 @@ export const finishGithubLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(userData);
+
     const emailData = await (
       await fetch(`${apiUrl}/user/emails`, {
         headers: {
@@ -113,18 +118,19 @@ export const finishGithubLogin = async (req, res) => {
       (email) => email.primary === true && email.verified === true
     );
     if (!emailObj) {
+      // set notification
       return res.redirect("/login");
     }
-    let user = await githubUser.findOne({ email: emailObj.email });
+    let user = await User.findOne({ email: emailObj.email });
     if (!user) {
-      user = await githubUser.create({
-        avatarUrl: userData.avatarUrl,
-        name: userData.login,
+      user = await User.create({
+        avatarUrl: userData.avatar_url,
+        name: userData.name,
         username: userData.login,
         email: emailObj.email,
         password: "",
-        location: userData.location,
         socialOnly: true,
+        location: userData.location,
       });
     }
     req.session.loggedIn = true;
@@ -134,6 +140,8 @@ export const finishGithubLogin = async (req, res) => {
     return res.redirect("/login");
   }
 };
+
+//Kakao Login
 
 export const startKakaoLogin = (req, res) => {
   const baseUrl = "https://kauth.kakao.com/oauth/authorize";
@@ -178,25 +186,83 @@ export const finishKakaoLogin = async (req, res) => {
         },
       })
     ).json();
-    console.log(userData);
 
-    /** const emailObj = userData.find(
-      (user) => user.is_email_valid === true && user.is_email_verified === true
-    );
-    if (!emailObj) {
-      return res.redirect("/login");
-    } **/
-
-    let user = await kakaoUser.findOne({ email: userData.kakao_account.email });
+    let user = await User.findOne({ email: userData.kakao_account.email });
     if (!user) {
-      user = await kakaoUser.create({
+      user = await User.create({
         avatarUrl: userData.kakao_account.profile.profile_image_url,
         name: userData.kakao_account.profile.nickname,
         username: userData.kakao_account.profile.nickname,
         email: userData.kakao_account.email,
         password: "",
-        location: "",
         socialOnly: true,
+        location: "",
+      });
+    }
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
+  } else {
+    return res.redirect("/login");
+  }
+};
+
+// Naver Login
+
+export const startNaverLogin = async (req, res) => {
+  const baseUrl = "https://nid.naver.com/oauth2.0/authorize";
+  const config = {
+    response_type: "code",
+    client_id: process.env.NV_CLIENT,
+    redirect_uri: process.env.NV_REDIRECT_URI,
+    state: process.env.NV_STATE,
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
+
+export const finishNaverLogin = async (req, res) => {
+  const baseUrl = "https://nid.naver.com/oauth2.0/token";
+  const config = {
+    grant_type: "authorization_code",
+    client_id: process.env.NV_CLIENT,
+    client_secret: process.env.NV_SECRET,
+    code: req.query.code,
+    state: req.query.state,
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  const tokenRequset = await (
+    await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/html;charset=utf-8",
+      },
+    })
+  ).json();
+  if ("access_token" in tokenRequset) {
+    const { access_token } = tokenRequset;
+    const apiUrl = "https://openapi.naver.com";
+    const userData = await (
+      await fetch(`${apiUrl}/v1/nid/me`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "text/html;charset=utf-8",
+          Authorization: `Bearer ${access_token}`,
+        },
+      })
+    ).json();
+    let user = await User.findOne({ email: userData.response.email });
+    if (!user) {
+      user = await User.create({
+        avatarUrl: userData.response.profile_image,
+        name: userData.response.name,
+        username: userData.response.nickname,
+        email: userData.response.email,
+        password: "",
+        socialOnly: true,
+        location: "",
       });
     }
     req.session.loggedIn = true;
@@ -211,24 +277,89 @@ export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
-
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
 };
-
 export const postEdit = async (req, res) => {
-  const {
-    session: {
-      user: { _id },
+  const { name, email, username, location } = req.body;
+  const file = req.file;
+  const userId = req.session.user._id;
+  const avatarUrl = req.session.user.avatarUrl;
+  const loggedInUser = await User.findById(userId);
+  let error = [];
+
+  const userExists = await User.exists({ username });
+  const emailExists = await User.exists({ email });
+
+  if (loggedInUser.username !== username && userExists) {
+    error.push("username");
+  }
+  if (loggedInUser.email !== email && emailExists) {
+    error.push("email");
+  }
+  if (error.length !== 0) {
+    return res.send(`${error} is already taken`);
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(
+    userId,
+    {
+      avatarUrl: file ? file.path : avatarUrl,
+      name,
+      email,
+      username,
+      location,
     },
-    body: { name, email, username, location },
-  } = req;
-  await User.findByIdAndUpdate(id, {
-    name,
-    email,
-    username,
-    location,
-  });
-  return res.render("edit-profile");
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  return res.redirect("/");
 };
-export const see = (req, res) => res.send("see");
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    req.flash("error", "Can't change password.");
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+export const postChangePassword = async (req, res) => {
+  const { _id } = req.session.user;
+  const { oldPassword, newPassword, newPasswordConfirmation } = req.body;
+  const user = await User.findById(_id);
+  const ok = await bcrypt.compare(oldPassword, user.password);
+  if (!ok) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The current password is incorrect",
+    });
+  }
+  if (newPassword !== newPasswordConfirmation) {
+    return res.status(400).render("users/change-password", {
+      pageTitle: "Change Password",
+      errorMessage: "The password does not match the Confirmation",
+    });
+  }
+  user.password = newPassword;
+  await user.save();
+  req.flash("info", "Password updated");
+  return res.redirect("/users/logout");
+};
+
+export const see = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id).populate({
+    path: "videos",
+    populate: {
+      path: "owner",
+      model: "User",
+    },
+  });
+  if (!user) {
+    return res.status(404).render("404", { pagetitle: "User not found." });
+  }
+  return res.render("users/profile", {
+    pageTitle: user.name,
+    user,
+  });
+};

@@ -1,34 +1,23 @@
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 
-const githubUserSchema = new mongoose.Schema({
-  avatarUrl: String,
-  name: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
+const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
-  password: { type: String },
-  location: String,
-  socialOnly: { type: Boolean, default: false },
-});
-
-githubUserSchema.pre("save", async function () {
-  this.password = bcrypt.hash(this.password, 5);
-});
-
-export const githubUser = mongoose.model("githubUser", githubUserSchema);
-
-const kakaoUserSchema = new mongoose.Schema({
   avatarUrl: String,
-  name: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String },
-  location: String,
   socialOnly: { type: Boolean, default: false },
+  username: { type: String, required: true, unique: true },
+  password: { type: String },
+  name: { type: String, required: true },
+  location: String,
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+  videos: [{ type: mongoose.Schema.Types.ObjectId, ref: "Video" }],
 });
 
-kakaoUserSchema.pre("save", async function () {
-  this.password = bcrypt.hash(this.password, 5);
+userSchema.pre("save", async function () {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 5);
+  }
 });
 
-export const kakaoUser = mongoose.model("kakaoUser", kakaoUserSchema);
+const User = mongoose.model("User", userSchema);
+export default User;
