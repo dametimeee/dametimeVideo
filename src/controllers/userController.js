@@ -209,7 +209,7 @@ export const finishKakaoLogin = async (req, res) => {
 
 // Naver Login
 
-export const startNaverLogin = async (req, res) => {
+export const startNaverLogin = (req, res) => {
   const baseUrl = "https://nid.naver.com/oauth2.0/authorize";
   const config = {
     response_type: "code",
