@@ -15,10 +15,10 @@ header
                     a(href="/users/logout") Log Out
                 li
                     a(href=`/users/${loggedInUser._id}`)
-                        if !loggedInUser.socialOnly
-                            img(crossorigin="anonymous",src="https://ssl.pstatic.net/static/pwe/address/img_profile.png").header__avatar
-                        else 
-                            img(crossorigin="anonymous",src=`${loggedInUser.avatarUrl}`).header__avatar
+                        if loggedInUser.socialOnly
+                            img(crossorigin, src=loggedInUser.avatarUrl).header__avatar
+                        else
+                            img(src="https://ssl.pstatic.net/static/pwe/address/img_profile.png").header__avatar
             else
                 li
                     a(href="/login") Login               

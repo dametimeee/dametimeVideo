@@ -159,7 +159,6 @@ export const finishKakaoLogin = async (req, res) => {
   const baseUrl = "https://kauth.kakao.com/oauth/token";
   const config = {
     client_id: process.env.KK_CLIENT,
-    client_secret: process.env.KK_SECRET,
     redirect_uri: process.env.KK_REDIRECT_URI,
     grant_type: "authorization_code",
     code: req.query.code,
@@ -188,9 +187,15 @@ export const finishKakaoLogin = async (req, res) => {
     ).json();
 
     let user = await User.findOne({ email: userData.kakao_account.email });
+    let profileImg =
+      "https://ssl.pstatic.net/static/pwe/address/img_profile.png";
+
     if (!user) {
+      if (userData.kakao_account.profile.is_default_image === false) {
+        profileImg = userData.kakao_account.profile.profile_image_url;
+      }
       user = await User.create({
-        avatarUrl: userData.kakao_account.profile.profile_image_url,
+        avatarUrl: profileImg,
         name: userData.kakao_account.profile.nickname,
         username: userData.kakao_account.profile.nickname,
         email: userData.kakao_account.email,

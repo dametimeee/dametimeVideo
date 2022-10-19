@@ -3,10 +3,10 @@ include ../mixins/video
 
 block content
     div.profile__data
-        if !user.socialOnly
-            img(crossorigin="anonymous",src="https://ssl.pstatic.net/static/pwe/address/img_profile.png").avatar
+        if user.socialOnly
+            img(crossorigin, src=user.avatarUrl).avatar
         else
-            img(crossorigin="anonymous", src=(user.avatarUrl)).avatar
+            img(crossorigin, src="https://ssl.pstatic.net/static/pwe/address/img_profile.png").avatar
         h3=user.name
     div.video-grid  
         each video in user.videos
