@@ -18,7 +18,7 @@ header
                         if loggedInUser.socialOnly
                             img(crossorigin, src=loggedInUser.avatarUrl).header__avatar
                         else
-                            img(src="https://ssl.pstatic.net/static/pwe/address/img_profile.png").header__avatar
+                            img(src=loggedInUser.avatarUrl).header__avatar
             else
                 li
                     a(href="/login") Login               
