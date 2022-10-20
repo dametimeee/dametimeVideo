@@ -15,7 +15,7 @@ header
                     a(href="/users/logout") Log Out
                 li
                     a(href=`/users/${loggedInUser._id}`)
-                        if loggedInUser.socialOnly.include("github")
+                        if loggedInUser.socialOnly.tostring().includes("github")
                             img(crossorigin, src=loggedInUser.avatarUrl).header__avatar
                         else
                             img(src="https://ssl.pstatic.net/static/pwe/address/img_profile.png").header__avatar
