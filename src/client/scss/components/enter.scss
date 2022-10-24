@@ -35,7 +35,7 @@ body {
   height: 100vh;
   width: 100vw;
   background-size: cover;
-  animation: loadBgi 4s ease-in-out none;
+  animation: loadBgi 4s linear none;
 }
 .guideText {
   position: fixed;
@@ -44,7 +44,7 @@ body {
   transform: translate(-50%, -50%);
   color: gray;
   font-size: 30px;
-  animation: loadGuideText 2s ease-in-out none;
+  animation: loadGuideText 2s linear none;
 }
 
 @keyframes enterHomePage {
@@ -64,7 +64,7 @@ body {
     opacity: 0;
   }
   100% {
-    opacity: 0.5;
+    opacity: 1;
   }
 }
 
