@@ -36,7 +36,7 @@ function windowOnLoad3() {
 function windowOnLoad4() {
   textBox.remove();
   const bgi = document.createElement("img");
-  bgi.crossOrigin;
+  bgi.crossorigin;
   bgi.src = "https://s3.amazonaws.com/hiitsmy/images/enter-img.png";
   home__wrapper.appendChild(bgi);
   bgi.classList.add("bgiAnimation");
