@@ -1,11 +1,13 @@
 .home__wrapper {
   width: 100vw;
   height: 100vh;
-  display: flex;
   .home__loginform__wrapper {
     width: 38%;
     .login__form {
       padding-left: 15px;
+    }
+    .auth-switch {
+      font-size: 15px;
     }
   }
   .home__bgi {

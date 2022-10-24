@@ -60,7 +60,7 @@ export const postLogin = async (req, res) => {
   }
   req.session.loggedIn = true;
   req.session.user = user;
-  return res.redirect("/");
+  return res.redirect("/home");
 };
 
 //Github Login
@@ -135,9 +135,9 @@ export const finishGithubLogin = async (req, res) => {
     }
     req.session.loggedIn = true;
     req.session.user = user;
-    return res.redirect("/");
+    return res.redirect("/home");
   } else {
-    return res.redirect("/login");
+    return res.redirect("/home");
   }
 };
 
@@ -206,9 +206,9 @@ export const finishKakaoLogin = async (req, res) => {
     }
     req.session.loggedIn = true;
     req.session.user = user;
-    return res.redirect("/");
+    return res.redirect("/home");
   } else {
-    return res.redirect("/login");
+    return res.redirect("/home");
   }
 };
 
@@ -272,15 +272,15 @@ export const finishNaverLogin = async (req, res) => {
     }
     req.session.loggedIn = true;
     req.session.user = user;
-    return res.redirect("/");
+    return res.redirect("/home");
   } else {
-    return res.redirect("/login");
+    return res.redirect("/home");
   }
 };
 
 export const logout = (req, res) => {
   req.session.destroy();
-  return res.redirect("/");
+  return res.redirect("/home");
 };
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
