@@ -36,8 +36,8 @@ function windowOnLoad3() {
 function windowOnLoad4() {
   textBox.remove();
   const bgi = document.createElement("img");
-  bgi.crossOrigin = "anonymous";
-  bgi.src = "https://wallpapercave.com/wp/wp1868498.png";
+  bgi.crossOrigin;
+  bgi.src = "https://s3.amazonaws.com/hiitsmy/images/enter-img.png";
   home__wrapper.appendChild(bgi);
   bgi.classList.add("bgiAnimation");
   bgi.addEventListener("animationend", handleGuideText);
