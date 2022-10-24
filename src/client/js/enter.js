@@ -37,7 +37,8 @@ function windowOnLoad4() {
   textBox.remove();
   const bgi = document.createElement("img");
   bgi.crossOrigin = "anonymous";
-  bgi.src = "https://s3.amazonaws.com/hiitsmy/images/enter-img.png";
+  bgi.src =
+    "https://hiitsmy.s3.ap-northeast-2.amazonaws.com/images/enter-img.png";
   home__wrapper.appendChild(bgi);
   bgi.classList.add("bgiAnimation");
   bgi.addEventListener("animationend", handleGuideText);
