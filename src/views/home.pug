@@ -1,16 +1,15 @@
-extends base
-include mixins/video
+doctype html
+html(lang="ko")
+    head
+        title #{pageTitle}
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
+        link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css")
+        link(rel="stylesheet", href="/static/css/styles.css")
+    body
+        .home__wrapper
+            .home__wrapper__text
+            a(href="/login").skipBox SKIP
+        
+    script(src="/static/js/enter.js")
 
-block content
-    div.video-grid 
-        each video in videos
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
-            +video(video)
 
-        else
-            span.empty__message No videos found

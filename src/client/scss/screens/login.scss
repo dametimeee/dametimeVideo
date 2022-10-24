@@ -1,0 +1,17 @@
+.home__wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  .home__loginform__wrapper {
+    width: 38%;
+    .login__form {
+      padding-left: 15px;
+    }
+  }
+  .home__bgi {
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+}

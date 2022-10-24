@@ -1,0 +1,78 @@
+html {
+  background-color: black;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.home__wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .skipBox {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: gray;
+    font-size: 30px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+}
+.animation {
+  color: white;
+  font-size: 50px;
+  animation: enterHomePage 4s ease-in-out none;
+}
+.bgiAnimation {
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  animation: loadBgi 4s ease-in-out none;
+}
+.guideText {
+  position: fixed;
+  left: 50%;
+  top: 90%;
+  transform: translate(-50%, -50%);
+  color: gray;
+  font-size: 30px;
+  animation: loadGuideText 2s ease-in-out none;
+}
+
+@keyframes enterHomePage {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes loadBgi {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes loadGuideText {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -19,7 +19,7 @@ body {
         font-size: 20px;
       }
       .header__logo {
-        color: $red;
+        color: white;
         padding-left: 40px;
         font-size: 30px;
         .header__logo__text {
@@ -55,8 +55,8 @@ body {
       border-radius: 5px;
     }
     .header__avatar {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
     }
   }

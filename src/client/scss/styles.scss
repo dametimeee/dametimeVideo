@@ -11,6 +11,7 @@
 @import "./components/social-login.scss";
 @import "./components/video-player.scss";
 @import "./components/left-menubar.scss";
+@import "./components/enter-screen.scss";
 
 // Screens
 @import "./screens/search.scss";
@@ -18,6 +19,7 @@
 @import "./screens/edit-profile.scss";
 @import "./screens/upload.scss";
 @import "./screens/watch.scss";
+@import "./screens/login.scss";
 
 // external
 @import url("https://fonts.googleapis.com/css2?family=Oswald&display=swap");
@@ -32,15 +34,17 @@ body {
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   background-color: $bg;
   color: white;
-  padding-top: 25px;
+  width: 100vw;
+  height: 100vh;
 }
 
-main {
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  margin-top: 50px;
-}
+// main {
+//   max-width: 1200px;
+//   width: 100%;
+//   margin: 0 auto;
+//   margin-top: 50px;
+//   margin-left: 7%;
+// }
 
 @keyframes goAway {
   from {
