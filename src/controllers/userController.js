@@ -137,7 +137,7 @@ export const finishGithubLogin = async (req, res) => {
     req.session.user = user;
     return res.redirect("/home");
   } else {
-    return res.redirect("/home");
+    return res.redirect("/login");
   }
 };
 
@@ -208,7 +208,7 @@ export const finishKakaoLogin = async (req, res) => {
     req.session.user = user;
     return res.redirect("/home");
   } else {
-    return res.redirect("/home");
+    return res.redirect("/login");
   }
 };
 
@@ -274,13 +274,13 @@ export const finishNaverLogin = async (req, res) => {
     req.session.user = user;
     return res.redirect("/home");
   } else {
-    return res.redirect("/home");
+    return res.redirect("/login");
   }
 };
 
 export const logout = (req, res) => {
   req.session.destroy();
-  return res.redirect("/home");
+  return res.redirect("/login");
 };
 export const getEdit = (req, res) => {
   return res.render("edit-profile", { pageTitle: "Edit Profile" });
@@ -319,13 +319,13 @@ export const postEdit = async (req, res) => {
     { new: true }
   );
   req.session.user = updatedUser;
-  return res.redirect("/");
+  return res.redirect("/home");
 };
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
     req.flash("error", "Can't change password.");
-    return res.redirect("/");
+    return res.redirect("/home");
   }
   return res.render("users/change-password", { pageTitle: "Change Password" });
 };
