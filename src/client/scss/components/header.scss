@@ -3,13 +3,15 @@ header {
   top: 0;
   left: 0;
   right: 0;
-  padding: 11px 0px;
+  padding-top: 13px;
+  padding-bottom: 10px;
   padding-left: 2.5%;
   padding-right: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
   left {
     display: flex;
     align-items: center;
