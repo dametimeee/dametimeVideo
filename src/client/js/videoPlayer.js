@@ -26,9 +26,21 @@ const handlePlayCilck = () => {
   playBtnIcon.classList = video.paused ? "fas fa-play" : "fas fa-pause";
 };
 
-const handleSpacebarKeydown = (event) => {
+const handleGoForward = () => {
+  timeline.value = currentTime += 5;
+};
+
+const handleGoBackward = () => {
+  timeline.value = currentTime -= 5;
+};
+
+const handleVideoKeydown = (event) => {
   if (event.keyCode == 32) {
     handlePlayCilck();
+  } else if (event.keyCode == 39) {
+    handleGoForward();
+  } else if (event.keyCode == 37) {
+    handleGoBackward();
   }
 };
 const handlePlay = () => (playBtn.innerText = "Play");
@@ -79,6 +91,8 @@ const handleTimelineChange = (event) => {
   video.currentTime = value;
 };
 
+const handlePressGoKey = () => {};
+
 const handleFullscreen = () => {
   const fullscreen = document.fullscreenElement;
   if (fullscreen) {
@@ -126,7 +140,7 @@ video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("click", handlePlayCilck);
 video.addEventListener("ended", handleEnded);
-window.addEventListener("keydown", handleSpacebarKeydown);
+video.addEventListener("keydown", handleVideoKeydown);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 timeline.addEventListener("input", handleTimelineChange);
