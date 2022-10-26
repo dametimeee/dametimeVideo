@@ -1,63 +1,50 @@
-body {
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 11px 0px;
-    padding-left: 2.5%;
-    padding-right: 30px;
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 11px 0px;
+  padding-left: 2.5%;
+  padding-right: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  left {
+    display: flex;
+    align-items: center;
+    .left-menubar__bar {
+      font-size: 20px;
+    }
+    .header__logo {
+      color: white;
+      padding-left: 40px;
+      font-size: 30px;
+    }
+  }
+  ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #202020;
-    overflow: hidden;
-    left {
-      display: flex;
-      align-items: center;
-      .left-menubar__bar {
-        font-size: 20px;
-      }
-      .header__logo {
-        color: white;
-        padding-left: 40px;
-        font-size: 30px;
-        .header__logo__text {
-          color: white;
-          font-size: 25px;
-          font-family: "Oswald", sans-serif;
-          margin-left: 1px;
-        }
-        .header__logo__text__nation {
-          color: #6f6f6f;
-          font-size: 8px;
-        }
-      }
+    li {
+      margin-left: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
     }
-    ul {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      li {
-        margin-left: 30px;
-        font-size: 14px;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-      i {
-        font-size: 15px;
-      }
+    i {
+      font-size: 15px;
     }
-    .header__btn {
-      background-color: white;
-      color: $bg;
-      padding: 5px 10px;
-      border-radius: 5px;
-    }
-    .header__avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-    }
+  }
+  .header__btn {
+    background-color: white;
+    color: $bg;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  .header__avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
   }
 }

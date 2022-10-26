@@ -13,13 +13,13 @@ const rootRouter = express.Router();
 rootRouter.get("/", function (req, res) {
   res.render("enter");
 });
-rootRouter.get("/home", home);
-rootRouter.route("/join").all(publicOnlyMiddleware).get(getJoin).post(postJoin);
 rootRouter
   .route("/login")
   .all(publicOnlyMiddleware)
   .get(getLogin)
   .post(postLogin);
+rootRouter.get("/home", home);
+rootRouter.route("/join").all(publicOnlyMiddleware).get(getJoin).post(postJoin);
 rootRouter.get("/search", search);
 
 export default rootRouter;
