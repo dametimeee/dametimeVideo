@@ -1,6 +1,7 @@
 // video mixin
 .video-mixin {
   color: white;
+
   .video-mixin__thumb {
     width: 253.656px;
     height: 142.328px;
@@ -9,18 +10,18 @@
   }
   .video-mixin__data {
     display: flex;
-    padding: 0px 15px;
-    padding-bottom: 20px;
+    margin-top: 10px;
+    padding-right: 15px;
+    padding-bottom: 40px;
     .video__mixin__avatar {
-      width: 36px;
-      height: 36px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
-      padding-right: 2px;
+      padding-right: 12px;
     }
     .video-mixin__title {
-      font-size: 18px;
+      font-size: 15px;
       display: block;
-      margin-top: 10px;
     }
     .video-mixin__meta {
       margin-top: 5px;
