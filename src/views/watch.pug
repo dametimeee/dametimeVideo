@@ -1,6 +1,7 @@
 extends base.pug
 
 block content
+    include partials/header
     div#videoContainer(data-id=video._id)
         video(crossorigin, src=video.fileUrl)
         div#videoControls.videoControls

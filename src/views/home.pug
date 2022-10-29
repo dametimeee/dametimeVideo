@@ -1,9 +1,17 @@
 extends base
 include mixins/video
 
+
 block content
+    include partials/header
+    //- div.header__img
+    //-     img(crossorigin, src="https://hiitsmy.s3.ap-northeast-2.amazonaws.com/images/homeHeader.jpg")
     div.video-grid
         each video in videos
+            +video(video)
+            +video(video)
+            +video(video)
+            +video(video)
             +video(video)
         else
             span.empty__message No videos found

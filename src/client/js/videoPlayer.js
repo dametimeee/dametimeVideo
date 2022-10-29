@@ -27,24 +27,40 @@ const handlePlayCilck = () => {
 };
 
 const handleGoForward = () => {
-  timeline.value = currentTime += 5;
+  video.currentTime = video.currentTime + 5;
 };
 
 const handleGoBackward = () => {
-  timeline.value = currentTime -= 5;
+  video.currentTime = video.currentTime - 5;
 };
 
+const handleVolumeUp = () => {
+  video.volume = video.volume + 0.1;
+  volumeRange.value = video.volume;
+};
+
+const handleVolumeDown = () => {
+  video.volume = video.volume - 0.1;
+  volumeRange.value = video.volume;
+};
 const handleVideoKeydown = (event) => {
   if (event.keyCode == 32) {
+    event.preventDefault();
     handlePlayCilck();
   } else if (event.keyCode == 39) {
+    event.preventDefault();
     handleGoForward();
   } else if (event.keyCode == 37) {
+    event.preventDefault();
     handleGoBackward();
+  } else if (event.keyCode == 38) {
+    event.preventDefault();
+    handleVolumeUp();
+  } else if (event.keyCode == 40) {
+    event.preventDefault();
+    handleVolumeDown();
   }
 };
-const handlePlay = () => (playBtn.innerText = "Play");
-const handlePause = () => (playBtn.innerText = "Pause");
 
 const handleMute = () => {
   if (video.muted) {
@@ -90,8 +106,6 @@ const handleTimelineChange = (event) => {
   } = event;
   video.currentTime = value;
 };
-
-const handlePressGoKey = () => {};
 
 const handleFullscreen = () => {
   const fullscreen = document.fullscreenElement;
@@ -140,7 +154,7 @@ video.addEventListener("loadeddata", handleLoadedMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate);
 video.addEventListener("click", handlePlayCilck);
 video.addEventListener("ended", handleEnded);
-video.addEventListener("keydown", handleVideoKeydown);
+window.addEventListener("keydown", handleVideoKeydown);
 videoContainer.addEventListener("mousemove", handleMouseMove);
 videoContainer.addEventListener("mouseleave", handleMouseLeave);
 timeline.addEventListener("input", handleTimelineChange);

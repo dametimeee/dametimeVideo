@@ -1,13 +1,22 @@
 // video mixin
 .video-mixin {
+  color: white;
   .video-mixin__thumb {
-    height: 140px;
-    width: 230px;
+    width: 253.656px;
+    height: 142.328px;
     border-radius: 7px;
     background-color: ivory;
   }
   .video-mixin__data {
+    display: flex;
     padding: 0px 15px;
+    padding-bottom: 20px;
+    .video__mixin__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      padding-right: 2px;
+    }
     .video-mixin__title {
       font-size: 18px;
       display: block;
@@ -15,7 +24,7 @@
     }
     .video-mixin__meta {
       margin-top: 5px;
-      font-size: 12px;
+      font-size: 10px;
     }
   }
 }

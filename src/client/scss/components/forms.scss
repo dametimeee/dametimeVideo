@@ -1,5 +1,5 @@
 form {
-  max-width: 420px;
+  max-width: 370px;
   margin: 0 auto;
   &:not(.search__form) {
     padding: 30px;
@@ -17,7 +17,7 @@ input[type="submit"] {
   border: 1px solid rgba(255, 255, 255, 0.2);
   background-color: black;
   margin-bottom: 5px;
-  font-size: 16px;
+  font-size: 15px;
   color: white;
   width: 90%;
   &::placeholder {
