@@ -91,6 +91,15 @@ const handleStart = () => {
   }, 5000);
 };
 
+const handlePreview = () => {
+  actionBtn.innerText = "🔴";
+  actionBtn.removeEventListener("click", handlePreview);
+  actionBtn.addEventListener("click", handleStart);
+  actionBtn.classList.add("record-btn");
+  video.classList.remove("hidden");
+  video.style.marginTop = "400px";
+};
+
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
@@ -105,4 +114,4 @@ const init = async () => {
 
 init();
 
-actionBtn.addEventListener("click", handleStart);
+actionBtn.addEventListener("click", handlePreview);

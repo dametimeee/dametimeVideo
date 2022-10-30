@@ -1,6 +1,7 @@
 form {
   max-width: 370px;
   margin: 0 auto;
+  color: rgba(255, 255, 255, 0.7);
   &:not(.search__form) {
     padding: 30px;
     background-color: rgba($color: $bg, $alpha: 0.7);
